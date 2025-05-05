@@ -28,8 +28,8 @@ func RunUserSeeder(db *gorm.DB) {
 			RoleID: admin.ID,
 		},
 		{
-			Name: "customer",
-			Email: "customer@gmail.com",
+			Name: "Demo",
+			Email: "demo@gmail.com",
 			Password: string(dummyPassword),
 			RoleID: user.ID,
 		},

@@ -8,12 +8,15 @@ type RepositoryRegistry struct {
 	db *gorm.DB
 }
 
-type IRepositoryRegistry interface{
+
+
+type IRepositoryRegistry interface {
 	UserRepository() IUserRepository
 	RoleRepository() IRoleRepository
+	FolderRepository() IFolderRepository
 }
 
-func NewRepositoryRegistry(db *gorm.DB) IRepositoryRegistry{
+func NewRepositoryRegistry(db *gorm.DB) IRepositoryRegistry {
 	return &RepositoryRegistry{
 		db: db,
 	}
@@ -25,4 +28,8 @@ func (r *RepositoryRegistry) UserRepository() IUserRepository {
 
 func (r *RepositoryRegistry) RoleRepository() IRoleRepository {
 	return NewRoleRepository(r.db)
+}
+
+func (r *RepositoryRegistry) FolderRepository() IFolderRepository {
+	return NewFolderRepository(r.db)
 }

@@ -10,6 +10,7 @@ type SeederRegistry struct {
 func (s *SeederRegistry) Run() {
 	RunRoleSeeder(s.db)
 	RunUserSeeder(s.db)
+	RunFolderSeeder(s.db)
 }
 
 type ISeederRegistry interface {

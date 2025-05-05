@@ -47,6 +47,7 @@ var command = &cobra.Command{
 		err = db.AutoMigrate(
 			&models.Role{},
 			&models.User{},
+			&models.Folder{},
 		)
 
 		if err != nil {

@@ -25,7 +25,7 @@ type ParamHttpRes struct {
 }
 
 func HttpResponse(param ParamHttpRes) {
-	if param.Err == nil {
+	if param.Code >= 200 && param.Code <= 299 {
 		param.Gin.AbortWithStatusJSON(param.Code, Response{
 			Status: constants.SUCCESS,
 			Message: http.StatusText(http.StatusOK),

@@ -10,14 +10,20 @@ type RoutesRegistry struct {
 	group       *gin.RouterGroup
 }
 
+// folderRoutes implements IRoutesRegistry.
+func (r *RoutesRegistry) folderRoutes() IFolderRoutes {
+	return NewFolderRoutes(r.controllers, r.group)
+}
+
 // userRoutes implements IRoutesRegistry.
-func (r *RoutesRegistry) userRoutes() IUserRoutes{
+func (r *RoutesRegistry) userRoutes() IUserRoutes {
 	return NewUserRoutes(r.controllers, r.group)
 }
 
 type IRoutesRegistry interface {
 	Serve()
 	userRoutes() IUserRoutes
+	folderRoutes() IFolderRoutes
 }
 
 func NewRouteRegistry(controller controllers.IControllerRegistry, group *gin.RouterGroup) IRoutesRegistry {
@@ -30,4 +36,5 @@ func NewRouteRegistry(controller controllers.IControllerRegistry, group *gin.Rou
 // Serve implements IRoutesRegistry.
 func (r *RoutesRegistry) Serve() {
 	r.userRoutes().Run()
+	r.folderRoutes().Run()
 }

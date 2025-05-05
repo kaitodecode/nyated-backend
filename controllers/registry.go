@@ -6,6 +6,11 @@ type ControllerRegistry struct {
 	services services.IServiceRegistery
 }
 
+// FolderController implements IControllerRegistry.
+func (c *ControllerRegistry) FolderController() IFolderController {
+	return NewFolderController(c.services)
+}
+
 // UserController implements IControllerRegistry.
 func (c *ControllerRegistry) UserController() IUserController {
 	return NewUserController(c.services)
@@ -13,6 +18,7 @@ func (c *ControllerRegistry) UserController() IUserController {
 
 type IControllerRegistry interface {
 	UserController() IUserController
+	FolderController() IFolderController
 }
 
 func NewControllerRegistry(services services.IServiceRegistery) IControllerRegistry {

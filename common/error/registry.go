@@ -22,6 +22,7 @@ func Init(){
 		jwtError, 
 		userError,
 		roleError,
+		folderErrors,
 	)
 }
 

@@ -45,11 +45,11 @@ func (u *UserService) isEmailExist(ctx context.Context, email string) bool {
 
 	return err == nil
 }
-func (u *UserService) isIDExist(ctx context.Context, id string) bool {
-	_, err := u.repositories.UserRepository().FindByID(ctx, id)
+// func (u *UserService) isIDExist(ctx context.Context, id string) bool {
+// 	_, err := u.repositories.UserRepository().FindByID(ctx, id)
 
-	return err == nil
-}
+// 	return err == nil
+// }
 
 func (s *UserService) Register(c context.Context, req *dto.UserRegisterRequest) (err error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)

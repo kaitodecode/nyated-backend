@@ -17,7 +17,7 @@ type UserController struct {
 // Login implements IUserController.
 func (u *UserController) Login(c *gin.Context) {
 	request := &dto.UserLoginRequest{}
-	if res, err := validation.ValidateBodyJson(c, request); err != nil {
+	if isErr, res := validation.ValidateBodyJson(c, request); isErr {
 		response.HttpResponse(res)
 		return
 	}
@@ -60,7 +60,7 @@ func (u *UserController) Me(c *gin.Context) {
 // Register implements IUserController.
 func (u *UserController) Register(c *gin.Context) {
 	request := &dto.UserRegisterRequest{}
-	if res, err := validation.ValidateBodyJson(c, request); err != nil {
+	if isErr, res := validation.ValidateBodyJson(c, request); isErr {
 		response.HttpResponse(res)
 		return
 	}
