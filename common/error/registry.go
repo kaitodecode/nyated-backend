@@ -23,6 +23,7 @@ func Init(){
 		userError,
 		roleError,
 		folderErrors,
+		noteError,
 	)
 }
 

@@ -14,12 +14,17 @@ type IRepositoryRegistry interface {
 	UserRepository() IUserRepository
 	RoleRepository() IRoleRepository
 	FolderRepository() IFolderRepository
+	NoteRepository() INoteRepository
 }
 
 func NewRepositoryRegistry(db *gorm.DB) IRepositoryRegistry {
 	return &RepositoryRegistry{
 		db: db,
 	}
+}
+
+func (r *RepositoryRegistry) NoteRepository() INoteRepository {
+	return NewNoteRepository(r.db)
 }
 
 func (r *RepositoryRegistry) UserRepository() IUserRepository {

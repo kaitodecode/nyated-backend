@@ -20,10 +20,15 @@ func (r *RoutesRegistry) userRoutes() IUserRoutes {
 	return NewUserRoutes(r.controllers, r.group)
 }
 
+func (r *RoutesRegistry) noteRoutes() INoteRoutes {
+	return NewNoteRoutes(r.controllers, r.group)
+}
+
 type IRoutesRegistry interface {
 	Serve()
 	userRoutes() IUserRoutes
 	folderRoutes() IFolderRoutes
+	noteRoutes() INoteRoutes
 }
 
 func NewRouteRegistry(controller controllers.IControllerRegistry, group *gin.RouterGroup) IRoutesRegistry {
@@ -37,4 +42,5 @@ func NewRouteRegistry(controller controllers.IControllerRegistry, group *gin.Rou
 func (r *RoutesRegistry) Serve() {
 	r.userRoutes().Run()
 	r.folderRoutes().Run()
+	r.noteRoutes().Run()
 }

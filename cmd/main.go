@@ -48,6 +48,7 @@ var command = &cobra.Command{
 			&models.Role{},
 			&models.User{},
 			&models.Folder{},
+			&models.Note{},
 		)
 
 		if err != nil {

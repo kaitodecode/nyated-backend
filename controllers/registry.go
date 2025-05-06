@@ -16,9 +16,14 @@ func (c *ControllerRegistry) UserController() IUserController {
 	return NewUserController(c.services)
 }
 
+func (c *ControllerRegistry) NoteController() INoteController {
+	return NewNoteController(c.services)
+}
+
 type IControllerRegistry interface {
 	UserController() IUserController
 	FolderController() IFolderController
+	NoteController() INoteController
 }
 
 func NewControllerRegistry(services services.IServiceRegistery) IControllerRegistry {

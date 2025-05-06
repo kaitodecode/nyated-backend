@@ -11,14 +11,14 @@ import (
 	"github.com/kaitodecode/nyated-backend/services"
 )
 
-type FolderController struct {
+type NoteController struct {
 	services services.IServiceRegistery
 }
 
-// Destroy implements IFolderController.
-func (f *FolderController) Destroy(c *gin.Context) {
+// Destroy implements INoteController.
+func (f *NoteController) Destroy(c *gin.Context) {
 	id := c.Param("id")
-	if err := f.services.FolderService().HandleDestroy(c, id); err != nil {
+	if err := f.services.NoteService().HandleDestroy(c, id); err != nil {
 		response.HttpResponse(response.ParamHttpRes{
 			Code: http.StatusBadRequest,
 			Err: err,
@@ -33,16 +33,18 @@ func (f *FolderController) Destroy(c *gin.Context) {
 	})
 }
 
-// Index implements IFolderController.
-func (f *FolderController) Index(c *gin.Context) {
+// Index implements INoteController.
+func (f *NoteController) Index(c *gin.Context) {
 	pg := pagination.GetPaginationParams(c)
-	query := &dto.GetFolderQuery{
+	query := &dto.GetNoteQuery{
 		Pagination: pg,
-		Filter: &dto.GetFolderFilter{
-			Name: c.Query("name"),
+		Filter: &dto.GetNoteFilter{
+			Title: c.Query("title"),
+			FolderID: c.Query("folder_id"),
 		},
 	}
-	result, err := f.services.FolderService().HandleIndex(c.Request.Context(), query)
+
+	result, err := f.services.NoteService().HandleIndex(c.Request.Context(), query)
 	if err != nil {
 		response.HttpResponse(response.ParamHttpRes{
 			Code: http.StatusBadRequest,
@@ -58,10 +60,10 @@ func (f *FolderController) Index(c *gin.Context) {
 	})
 }
 
-// Show implements IFolderController.
-func (f *FolderController) Show(c *gin.Context) {
+// Show implements INoteController.
+func (f *NoteController) Show(c *gin.Context) {
 	id := c.Param("id")
-	folder, err := f.services.FolderService().HandleShow(c, id)
+	Note, err := f.services.NoteService().HandleShow(c, id)
 
 	if err != nil {
 		response.HttpResponse(response.ParamHttpRes{
@@ -73,20 +75,20 @@ func (f *FolderController) Show(c *gin.Context) {
 	}
 	response.HttpResponse(response.ParamHttpRes{
 		Code: http.StatusOK,
-		Data: &folder,
+		Data: &Note,
 		Gin: c,
 	})
 }
 
-// Store implements IFolderController.
-func (f *FolderController) Store(c *gin.Context) {
-	request := &dto.StoreFolderRequest{}
+// Store implements INoteController.
+func (f *NoteController) Store(c *gin.Context) {
+	request := &dto.StoreNoteRequest{}
 	if isErr, res := validation.ValidateBodyJson(c, request); isErr {
 		response.HttpResponse(res)
 		return
 	}
 
-	if err := f.services.FolderService().HandleStore(c.Request.Context(), request); err != nil {
+	if err := f.services.NoteService().HandleStore(c.Request.Context(), request); err != nil {
 		response.HttpResponse(response.ParamHttpRes{
 			Code: http.StatusBadRequest,
 			Err: err,
@@ -101,16 +103,16 @@ func (f *FolderController) Store(c *gin.Context) {
 	})
 }
 
-// Update implements IFolderController.
-func (f *FolderController) Update(c *gin.Context) {
+// Update implements INoteController.
+func (f *NoteController) Update(c *gin.Context) {
 	id := c.Param("id")
-	request := &dto.UpdateFolderRequest{}
+	request := &dto.UpdateNoteRequest{}
 	if isErr, res := validation.ValidateBodyJson(c, request); isErr {
 		response.HttpResponse(res)
 		return
 	}
 
-	if err := f.services.FolderService().HandleUpdate(c.Request.Context(), request,id); err != nil {
+	if err := f.services.NoteService().HandleUpdate(c.Request.Context(), request,id); err != nil {
 		response.HttpResponse(response.ParamHttpRes{
 			Code: http.StatusBadRequest,
 			Err: err,
@@ -125,7 +127,7 @@ func (f *FolderController) Update(c *gin.Context) {
 	})
 }
 
-type IFolderController interface {
+type INoteController interface {
 	Index(*gin.Context)
 	Show(*gin.Context)
 	Store(*gin.Context)
@@ -133,6 +135,6 @@ type IFolderController interface {
 	Destroy(*gin.Context)
 }
 
-func NewFolderController(services services.IServiceRegistery) IFolderController {
-	return &FolderController{services}
+func NewNoteController(services services.IServiceRegistery) INoteController {
+	return &NoteController{services}
 }

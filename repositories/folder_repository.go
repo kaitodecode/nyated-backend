@@ -11,6 +11,7 @@ import (
 	"github.com/kaitodecode/nyated-backend/constants"
 	"github.com/kaitodecode/nyated-backend/domain/dto"
 	"github.com/kaitodecode/nyated-backend/domain/models"
+	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
@@ -19,15 +20,23 @@ type FolderRepository struct {
 }
 
 // Destroy implements IFolderRepository.
-func (f *FolderRepository) Destroy(c context.Context,id string) error {
-	if err := f.db.WithContext(c).Where("id = ?", id).Delete(&models.Folder{}).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return errors.New(AppError.GetMessage(c, AppError.ErrFolderNotFound))
-		}
+func (f *FolderRepository) Destroy(c context.Context, id string) error {
+	logrus.Info("FolderRepository.Destroy()")
+	logrus.Infof("id => %s", id)
+
+	tx := f.db.WithContext(c).Where("id = ?", id).Delete(&models.Folder{})
+	if tx.Error != nil {
+		logrus.Infof("err => %v", tx.Error)
 		return errors.New(AppError.GetMessage(c, AppError.ErrSqlError))
 	}
+
+	if tx.RowsAffected == 0 {
+		return errors.New(AppError.GetMessage(c, AppError.ErrFolderNotFound))
+	}
+
 	return nil
 }
+
 
 // FindByID implements IFolderRepository.
 func (f *FolderRepository) FindByID(c context.Context,id string) (*models.Folder, error) {

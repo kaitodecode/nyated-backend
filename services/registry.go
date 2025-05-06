@@ -16,9 +16,14 @@ func (s *ServiceRegistry) UserService() IUserService {
 	return NewUserService(s.repositories)
 }
 
+func (s *ServiceRegistry) NoteService() INoteService {
+	return NewNoteService(s.repositories)
+}
+
 type IServiceRegistery interface {
 	UserService() IUserService
 	FolderService() IFolderService
+	NoteService() INoteService
 }
 
 func NewServiceRegistry(repositories repositories.IRepositoryRegistry) IServiceRegistery {
